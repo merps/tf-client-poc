@@ -1,0 +1,3 @@
+awsRegion     = "ap-southeast-2"
+projectPrefix = "cld-mig"
+resourceOwner = "BFSI"
