@@ -2,7 +2,7 @@
 # BIG_IP Instances
 
 provider "bigip" {
-  address = var.bigip.hostname
+  address  = var.bigip.hostname
   username = var.bigip.username
   password = var.bigip.password
 }

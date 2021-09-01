@@ -31,7 +31,20 @@ data "vsphere_virtual_machine" "template" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 */
-resource "bigip_do"  "do-example" {
-     do_json = "${file("files/lab_do.json")}"
-     timeout = 15
- }
+data "template_file" "init" {
+  template = file("${path.module}/files/lab_do.do.json")
+  vars = {
+    bigip_hostname = var.bigip.hostname,
+    bigip_user = var.bigip.username
+    bigip_pass = var.bigip.password
+    dns = var.dns
+    search_order = var.search_order
+    biqiq_user = var.bigiq_user
+    bigiq_pass = var.bigiq_pass
+    license_pool = var.license_pool
+  }
+}
+resource "bigip_do" "do-example" {
+  do_json = file("files/lab_do.json")
+  timeout = 15
+}
