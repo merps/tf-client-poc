@@ -1,8 +1,9 @@
-variable "ec2_key_name" {
-  description = "EC2 KeyPair name for instance generation"
-  type        = string
+variable "awsRegion" {
+  type = string
 }
-
-variable "cm_licenses" {
-  type = list(string)
+variable "projectPrefix" {
+  type = string
+}
+variable "resourceOwner" {
+  type = string
 }
