@@ -6,27 +6,14 @@ data "terraform_remote_state" "day0" {
   }
 }
 
-# Create Local object for modules
-locals {
-  apps_vpc = {
-    vpc_id_apps          = data.terraform_remote_state.day0.outputs.vpc_id_apps
-    subnets_mgmt_apps    = data.terraform_remote_state.day0.outputs.subnets_mgmt_apps
-    subnets_private_apps = data.terraform_remote_state.day0.outputs.subnets_private_apps
-  }
-  inspect_vpc = {
-    vpc_id_inspect         = data.terraform_remote_state.day0.outputs.vpc_id_inspect
-    subnets_public_inspect = data.terraform_remote_state.day0.outputs.subnets_public_inspect
-    nlb_target_group_arns  = data.terraform_remote_state.day0.outputs.nlb_target_group_arns
-  }
-}
-
 # Retrieve AWS regional zones
 data "aws_availability_zones" "available" {
   state = "available"
 }
 
-locals {
-  availability_zones = data.aws_availability_zones.available.names
+# Initialise Data from IaC foundation
+data "aws_subnet_ids" "inspect_public" {
+  vpc_id = data.terraform_remote_state.day0.outputs.aws_vpc_id_inspect
 }
 
 # Initialise Random variable
@@ -57,7 +44,7 @@ module "f5_aws_management" {
   aws_secretmanager_secret_id = aws_secretsmanager_secret.bigiq.id
   cm_license_keys             = [var.cm_licenses]
   ec2_key_name                = var.ec2_key_name
-  vpc_id                      = local.apps_vpc.vpc_id_apps
+  vpc_id                      = data.aws_subnet_ids.inspect_public.vpc_id
   vpc_mgmt_subnet_ids         = [local.apps_vpc.subnets_mgmt_apps]
   vpc_private_subnet_ids      = [local.apps_vpc.subnets_private_apps]
 }
@@ -72,4 +59,16 @@ module "f5_aws_ingress_inspect" {
   allowedIps            = "0.0.0.0/0"
   f5_ssh_publickey      = "mjk-f5cs-apse2"
   nlb_target_group_arns = local.inspect_vpc.nlb_target_group_arns
+}
+
+# Provision single-nic autoscaling instances BIG-IP instances, in inspection vnet,
+# with BIG-IQ association in cloud-init/DO
+module "f5_google_ingress_inspect" {
+  source = "../modules/gcp/autoscale_lb/1nic"
+}
+
+# Provision single-nic autoscaling instances BIG-IP instances, in inspection vnet,
+# with BIG-IQ association in cloud-init/DO
+module "f5_azure_ingress_inspect" {
+  source = "../modules/azure/autoscale_lb/1nic"
 }
