@@ -1,0 +1,2398 @@
+{
+	"info": {
+		"_postman_id": "b7659644-7d89-45cf-9bbc-d4ba1c1b3c18",
+		"name": "BIG-IQ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Retrieve Authentication Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"bigiq_auth_token\", value:\"token.token\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"{{bigiq_cred}}\",\n    \"password\":\"{{bigiq_pass}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/authn/login",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"authn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "AS3",
+			"item": [
+				{
+					"name": "Retrieve Authentication Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"bigiq_auth_token\", value:\"token.token\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"{{bigiq_cred}}\",\n    \"password\":\"{{bigiq_pass}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/authn/login",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"authn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AS3 Decalaration HTTPS",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"big_iq_task_id\", value:\"id\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigiq_auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"AS3\",\n    \"action\": \"deploy\",\n    \"persist\": true,\n    \"declaration\": {\n        \"class\": \"ADC\",\n        \"schemaVersion\": \"3.12.0\",\n        \"id\": \"isc-lab\",\n        \"label\": \"calalang_https\",\n        \"remark\": \"HTTPS Application Service\",\n        \"target\": {\n            \"hostname\": \"calalang-azure-0.westus2.cloudapp.azure.com\"\n        },\n        \"calalang_https\": {\n            \"class\": \"Tenant\",\n            \"MyWebApp2https\": {\n                \"class\": \"Application\",\n                \"template\": \"https\",\n                \"statsProfile\": {\n                    \"class\": \"Analytics_Profile\",\n                    \"collectedStatsInternalLogging\": true,\n                    \"collectedStatsExternalLogging\": true,\n                    \"capturedTrafficInternalLogging\": true,\n                    \"capturedTrafficExternalLogging\": true,\n                    \"collectPageLoadTime\": true,\n                    \"collectClientSideStatistics\": true,\n                    \"collectResponseCode\": true,\n                    \"collectGeo\": true,\n                    \"collectIp\": true,\n                    \"collectMaxTpsAndThroughput\": true,\n                    \"collectMethod\": true,\n                    \"collectOsAndBrowser\": true,\n                    \"collectUserAgent\": true,\n                    \"collectUserSession\": true,\n                    \"collectSubnet\": true,\n                    \"collectUrl\": true,\n                    \"sessionCookieSecurity\": \"ssl-only\"\n                },\n                \"serviceMain\": {\n                    \"class\": \"Service_HTTPS\",\n                    \"virtualAddresses\": [\n                        \"10.0.2.14\"\n                    ],\n                    \"pool\": \"web_pool\",\n                    \"profileAnalytics\": {\n                        \"use\": \"statsProfile\"\n                    },\n                    \"serverTLS\": \"webtls\"\n                },\n                \"web_pool\": {\n                    \"class\": \"Pool\",\n                    \"monitors\": [\n                        \"http\"\n                    ],\n                    \"members\": [\n                        {\n                            \"servicePort\": 80,\n                            \"serverAddresses\": [\n                                \"10.0.3.39\"\n                            ],\n                            \"shareNodes\": true\n                        }\n                    ]\n                },\n                \"webtls\": {\n                    \"class\": \"TLS_Server\",\n                    \"certificates\": [\n                        {\n                            \"certificate\": \"webcert\"\n                        }\n                    ]\n                },\n                \"webcert\": {\n                    \"class\": \"Certificate\",\n                    \"certificate\": {\n                        \"bigip\": \"/Common/default.crt\"\n                    },\n                    \"privateKey\": {\n                        \"bigip\": \"/Common/default.key\"\n                    }\n                }\n            }\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/appsvcs/declare?async=true&=",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"appsvcs",
+								"declare"
+							],
+							"query": [
+								{
+									"key": "async",
+									"value": "true"
+								},
+								{
+									"key": "",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Declaration HTTPS",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"big_iq_task_id\", value:\"id\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"type": "text",
+								"value": "{{bigiq_auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"AS3\",\n    \"action\": \"deploy\",\n    \"persist\": true,\n    \"declaration\": {\n        \"class\": \"ADC\",\n        \"schemaVersion\": \"3.13.0\",\n        \"id\": \"isc-lab\",\n        \"label\": \"calalang_https\",\n        \"remark\": \"Task 2 - HTTPS Application Service\",\n        \"target\": {\n            \"hostname\": \"calalang-azure-0.westus2.cloudapp.azure.com\"\n        },\n        \"calalang_https\": {\n            \"class\": \"Tenant\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/appsvcs/declare?async=true&=",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"appsvcs",
+								"declare"
+							],
+							"query": [
+								{
+									"key": "async",
+									"value": "true"
+								},
+								{
+									"key": "",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AS3 Decalaration WAF",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"big_iq_task_id\", value:\"id\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"type": "text",
+								"value": "{{bigiq_auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"AS3\",\n    \"action\": \"deploy\",\n    \"persist\": true,\n    \"declaration\": {\n        \"class\": \"ADC\",\n        \"schemaVersion\": \"3.7.0\",\n        \"id\": \"isc-lab\",\n        \"label\": \"calalang_waf\",\n        \"remark\": \"Task 3a - HTTPS Application with WAF\",\n        \"target\": {\n            \"hostname\": \"BOS-vBIGIP02.termmarc.com\"\n        },\n        \"calalang_waf\": {\n            \"class\": \"Tenant\",\n            \"MyWebApp3waf\": {\n                \"class\": \"Application\",\n                \"template\": \"https\",\n                \"statsProfile\": {\n                    \"class\": \"Analytics_Profile\",\n                    \"collectedStatsInternalLogging\": true,\n                    \"collectedStatsExternalLogging\": false,\n                    \"capturedTrafficInternalLogging\": false,\n                    \"capturedTrafficExternalLogging\": true,\n                    \"collectPageLoadTime\": true,\n                    \"collectClientSideStatistics\": true,\n                    \"collectResponseCode\": true,\n                    \"sessionCookieSecurity\": \"ssl-only\"\n                },\n                \"serviceMain\": {\n                    \"class\": \"Service_HTTPS\",\n                    \"virtualAddresses\": [\n                        \"10.1.10.123\"\n                    ],\n                    \"pool\": \"web_pool\",\n                    \"profileAnalytics\": {\n                        \"use\": \"statsProfile\"\n                    },\n                    \"serverTLS\": \"webtls\",\n                    \"policyWAF\": {\n                        \"bigip\": \"/Common/templates-default\"\n                    }\n                },\n                \"web_pool\": {\n                    \"class\": \"Pool\",\n                    \"monitors\": [\n                        \"http\"\n                    ],\n                    \"members\": [\n                        {\n                            \"servicePort\": 80,\n                            \"serverAddresses\": [\n                                \"10.1.20.122\",\n                                \"10.1.20.123\"\n                            ],\n                            \"shareNodes\": true\n                        }\n                    ]\n                },\n                \"webtls\": {\n                    \"class\": \"TLS_Server\",\n                    \"certificates\": [\n                        {\n                            \"certificate\": \"webcert\"\n                        }\n                    ]\n                },\n                \"webcert\": {\n                    \"class\": \"Certificate\",\n                    \"certificate\": {\n                        \"bigip\": \"/Common/default.crt\"\n                    },\n                    \"privateKey\": {\n                        \"bigip\": \"/Common/default.key\"\n                    }\n                }\n            }\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/appsvcs/declare?async=true&=",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"appsvcs",
+								"declare"
+							],
+							"query": [
+								{
+									"key": "async",
+									"value": "true"
+								},
+								{
+									"key": "",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Declaration WAF",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"big_iq_task_id\", value:\"id\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"type": "text",
+								"value": "{{bigiq_auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"AS3\",\n    \"action\": \"deploy\",\n    \"persist\": true,\n    \"declaration\": {\n        \"class\": \"ADC\",\n        \"schemaVersion\": \"3.7.0\",\n        \"id\": \"isc-lab\",\n        \"label\": \"calalang_waf\",\n        \"remark\": \"Task 3a - HTTPS Application with WAF\",\n        \"target\": {\n            \"hostname\": \"BOS-vBIGIP02.termmarc.com\"\n        },\n        \"calalang_waf\": {\n            \"class\": \"Tenant\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/appsvcs/declare?async=true&=",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"appsvcs",
+								"declare"
+							],
+							"query": [
+								{
+									"key": "async",
+									"value": "true"
+								},
+								{
+									"key": "",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AS3 Decalaration Generic Service",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"type": "text",
+								"value": "{{bigiq_auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"AS3\",\n    \"action\": \"deploy\",\n    \"persist\": true,\n    \"declaration\": {\n        \"class\": \"ADC\",\n        \"schemaVersion\": \"3.7.0\",\n        \"id\": \"isc-lab\",\n        \"label\": \"Task4\",\n        \"remark\": \"Task 4 - Generic Services\",\n        \"target\": {\n            \"hostname\": \"SEA-vBIGIP01.termmarc.com\"\n        },\n        \"Task4\": {\n            \"class\": \"Tenant\",\n            \"MyWebApp4generic\": {\n                \"class\": \"Application\",\n                \"template\": \"generic\",\n                \"statsProfile\": {\n                    \"class\": \"Analytics_Profile\",\n                    \"collectedStatsInternalLogging\": true,\n                    \"collectedStatsExternalLogging\": false,\n                    \"capturedTrafficInternalLogging\": false,\n                    \"capturedTrafficExternalLogging\": true,\n                    \"collectPageLoadTime\": true,\n                    \"collectClientSideStatistics\": true,\n                    \"collectResponseCode\": true,\n                    \"sessionCookieSecurity\": \"ssl-only\"\n                },\n                \"MyFunnyVirtualServerName\": {\n                    \"class\": \"Service_Generic\",\n                    \"virtualAddresses\": [\n                        \"10.1.10.127\"\n                    ],\n                    \"virtualPort\": 8080,\n                    \"pool\": \"web_pool\",\n                    \"profileAnalytics\": {\n                        \"use\": \"statsProfile\"\n                    }\n                },\n                \"web_pool\": {\n                    \"class\": \"Pool\",\n                    \"monitors\": [\n                        \"tcp\"\n                    ],\n                    \"members\": [\n                        {\n                            \"servicePort\": 80,\n                            \"serverAddresses\": [\n                                \"10.1.20.126\",\n                                \"10.1.20.127\"\n                            ],\n                            \"shareNodes\": true\n                        }\n                    ]\n                }\n            }\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/appsvcs/declare?async=true&=",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"appsvcs",
+								"declare"
+							],
+							"query": [
+								{
+									"key": "async",
+									"value": "true"
+								},
+								{
+									"key": "",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create AS3 Template",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"type": "text",
+								"value": "{{bigiq_auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n     \"description\": \"Task 6 - Create custom HTTP AS3 Template on BIG-IQ\",\n     \"name\": \"HTTPcustomTemplateTask6\",\n     \"schemaOverlay\": {\n         \"type\": \"object\",\n         \"properties\": {\n             \"class\": {\n                 \"type\": \"string\",\n                 \"const\": \"Application\"\n             },\n             \"schemaOverlay\": {},\n             \"label\": {},\n             \"remark\": {},\n             \"template\": {},\n             \"enable\": {},\n             \"constants\": {}\n         },\n         \"additionalProperties\": {\n             \"allOf\": [\n                 {\n                     \"if\": {\n                         \"properties\": {\n                             \"class\": {\n                                 \"const\": \"Service_HTTP\"\n                             }\n                         }\n                     },\n                     \"then\": {\n                         \"$ref\": \"#/definitions/Service_HTTP\"\n                     }\n                 }\n             ],\n             \"not\": {\n                 \"anyOf\": [\n                     {\n                         \"properties\": {\n                             \"class\": {\n                                 \"const\": \"IAM_Policy\"\n                             }\n                         }\n                     },\n                     {\n                         \"properties\": {\n                             \"class\": {\n                                 \"const\": \"WAF_Policy\"\n                             }\n                         }\n                     }\n                 ]\n             }\n         },\n         \"required\": [\n             \"class\"\n         ],\n         \"definitions\": {\n             \"Service_HTTP\": {\n                 \"type\": \"object\",\n                 \"properties\": {\n                     \"virtualPort\": {\n                         \"type\": \"integer\",\n                         \"const\": 8080,\n                         \"default\": 8080\n                     }\n                 },\n                 \"dependencies\": {\n                     \"policyIAM\": {\n                         \"not\": {}\n                     },\n                     \"policyWAF\": {\n                         \"not\": {}\n                     }\n                 },\n                 \"additionalProperties\": true\n             }\n         }\n     }\n }"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/global/appsvcs-templates",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"global",
+								"appsvcs-templates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AS3 Declaration Template HTTP",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"type": "text",
+								"value": "{{bigiq_auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n     \"class\": \"AS3\",\n     \"action\": \"deploy\",\n     \"declaration\": {\n         \"class\": \"ADC\",\n         \"schemaVersion\": \"3.7.0\",\n         \"id\": \"isc-lab\",\n         \"label\": \"Task8\",\n         \"target\": {\n             \"hostname\": \"SEA-vBIGIP01.termmarc.com\"\n         },\n         \"Task8\": {\n             \"class\": \"Tenant\",\n             \"MyWebApp8http\": {\n                 \"class\": \"Application\",\n                 \"schemaOverlay\": \"HTTPcustomTemplateTask6\",\n                 \"template\": \"http\",\n                 \"statsProfile\": {\n                     \"class\": \"Analytics_Profile\",\n                     \"collectedStatsInternalLogging\": true,\n                     \"collectedStatsExternalLogging\": false,\n                     \"capturedTrafficInternalLogging\": false,\n                     \"capturedTrafficExternalLogging\": true,\n                     \"collectPageLoadTime\": true,\n                     \"collectClientSideStatistics\": true,\n                     \"collectResponseCode\": true,\n                     \"sessionCookieSecurity\": \"ssl-only\"\n                 },\n                 \"serviceMain\": {\n                     \"class\": \"Service_HTTP\",\n                     \"virtualAddresses\": [\n                         \"10.1.10.133\"\n                     ],\n                     \"virtualPort\": 8080,\n                     \"pool\": \"pool_8\",\n                     \"profileAnalytics\": {\n                         \"use\": \"statsProfile\"\n                     }\n                 },\n                 \"pool_8\": {\n                     \"class\": \"Pool\",\n                     \"monitors\": [\n                         \"http\"\n                     ],\n                     \"members\": [\n                         {\n                             \"servicePort\": 80,\n                             \"serverAddresses\": [\n                                 \"10.1.20.132\",\n                                 \"10.1.20.133\"\n                             ],\n                             \"shareNodes\": true\n                         }\n                     ]\n                 }\n             }\n         }\n     }\n }"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/global/appsvcs-templates",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"global",
+								"appsvcs-templates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete AS3 Templates",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"type": "text",
+								"value": "{{bigiq_auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"AS3\",\n    \"action\": \"deploy\",\n    \"persist\": true,\n    \"declaration\": {\n        \"class\": \"ADC\",\n        \"schemaVersion\": \"3.7.0\",\n        \"id\": \"isc-lab\",\n        \"label\": \"Task2\",\n        \"remark\": \"Task 2 - HTTPS Application Service\",\n        \"target\": {\n            \"hostname\": \"SEA-vBIGIP01.termmarc.com\"\n        },\n        \"Task2\": {\n            \"class\": \"Tenant\",\n            \"MyWebApp2https\": {\n                \"class\": \"Application\",\n                \"template\": \"https\",\n                \"statsProfile\": {\n                    \"class\": \"Analytics_Profile\",\n                    \"collectedStatsInternalLogging\": true,\n                    \"collectedStatsExternalLogging\": false,\n                    \"capturedTrafficInternalLogging\": false,\n                    \"capturedTrafficExternalLogging\": true,\n                    \"collectPageLoadTime\": true,\n                    \"collectClientSideStatistics\": true,\n                    \"collectResponseCode\": true,\n                    \"sessionCookieSecurity\": \"ssl-only\"\n                },\n                \"serviceMain\": {\n                    \"class\": \"Service_HTTPS\",\n                    \"virtualAddresses\": [\n                        \"10.1.10.113\"\n                    ],\n                    \"pool\": \"web_pool\",\n                    \"profileAnalytics\": {\n                        \"use\": \"statsProfile\"\n                    },\n                    \"serverTLS\": \"webtls\"\n                },\n                \"web_pool\": {\n                    \"class\": \"Pool\",\n                    \"monitors\": [\n                        \"http\"\n                    ],\n                    \"members\": [\n                        {\n                            \"servicePort\": 80,\n                            \"serverAddresses\": [\n                                \"10.1.20.112\",\n                                \"10.1.20.113\"\n                            ],\n                            \"shareNodes\": true\n                        }\n                    ]\n                },\n                \"webtls\": {\n                    \"class\": \"TLS_Server\",\n                    \"certificates\": [\n                        {\n                            \"certificate\": \"webcert\"\n                        }\n                    ]\n                },\n                \"webcert\": {\n                    \"class\": \"Certificate\",\n                    \"certificate\": {\n                        \"bigip\": \"/Common/default.crt\"\n                    },\n                    \"privateKey\": {\n                        \"bigip\": \"/Common/default.key\"\n                    }\n                }\n            }\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/global/appsvcs-templates/{{big_iq_template_id}}",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"global",
+								"appsvcs-templates",
+								"{{big_iq_template_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get BIG-IQ Task Status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"type": "text",
+								"value": "{{bigiq_auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"AS3\",\n    \"action\": \"deploy\",\n    \"persist\": true,\n    \"declaration\": {\n        \"class\": \"ADC\",\n        \"schemaVersion\": \"3.7.0\",\n        \"id\": \"isc-lab\",\n        \"label\": \"Task2\",\n        \"remark\": \"Task 2 - HTTPS Application Service\",\n        \"target\": {\n            \"hostname\": \"SEA-vBIGIP01.termmarc.com\"\n        },\n        \"Task2\": {\n            \"class\": \"Tenant\",\n            \"MyWebApp2https\": {\n                \"class\": \"Application\",\n                \"template\": \"https\",\n                \"statsProfile\": {\n                    \"class\": \"Analytics_Profile\",\n                    \"collectedStatsInternalLogging\": true,\n                    \"collectedStatsExternalLogging\": false,\n                    \"capturedTrafficInternalLogging\": false,\n                    \"capturedTrafficExternalLogging\": true,\n                    \"collectPageLoadTime\": true,\n                    \"collectClientSideStatistics\": true,\n                    \"collectResponseCode\": true,\n                    \"sessionCookieSecurity\": \"ssl-only\"\n                },\n                \"serviceMain\": {\n                    \"class\": \"Service_HTTPS\",\n                    \"virtualAddresses\": [\n                        \"10.1.10.113\"\n                    ],\n                    \"pool\": \"web_pool\",\n                    \"profileAnalytics\": {\n                        \"use\": \"statsProfile\"\n                    },\n                    \"serverTLS\": \"webtls\"\n                },\n                \"web_pool\": {\n                    \"class\": \"Pool\",\n                    \"monitors\": [\n                        \"http\"\n                    ],\n                    \"members\": [\n                        {\n                            \"servicePort\": 80,\n                            \"serverAddresses\": [\n                                \"10.1.20.112\",\n                                \"10.1.20.113\"\n                            ],\n                            \"shareNodes\": true\n                        }\n                    ]\n                },\n                \"webtls\": {\n                    \"class\": \"TLS_Server\",\n                    \"certificates\": [\n                        {\n                            \"certificate\": \"webcert\"\n                        }\n                    ]\n                },\n                \"webcert\": {\n                    \"class\": \"Certificate\",\n                    \"certificate\": {\n                        \"bigip\": \"/Common/default.crt\"\n                    },\n                    \"privateKey\": {\n                        \"bigip\": \"/Common/default.key\"\n                    }\n                }\n            }\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/appsvcs/task/{{big_iq_task_id}}",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"appsvcs",
+								"task",
+								"{{big_iq_task_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BIG-IQ Force Delete AS3 Application",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"big_iq_task_id\", value:\"id\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigiq_auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"configSetName\": \"prod_azure_nginx_application_01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/global/tasks/force-delete",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"global",
+								"tasks",
+								"force-delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BIGIQ Rest Proxy",
+			"item": [
+				{
+					"name": "Get Device List for UUID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46cGFzc3dvcmQ="
+							}
+						],
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/resolver/device-groups/JC_Device_Group/devices/",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"resolver",
+								"device-groups",
+								"JC_Device_Group",
+								"devices",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Rest Proxy on BIGIQ",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46cGFzc3dvcmQ="
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r  \"properties\":{\r    \"isRestProxyEnabled\":true\r} }"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/resolver/device-groups/JC_Device_Group/devices/cdb656c0-5eb7-4efc-9904-52671560e950",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"resolver",
+								"device-groups",
+								"JC_Device_Group",
+								"devices",
+								"cdb656c0-5eb7-4efc-9904-52671560e950"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Nodes on BIG IP A through Rest Proxy",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46cGFzc3dvcmQ="
+							}
+						],
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/resolver/device-groups/JC_Device_Group/devices/cdb656c0-5eb7-4efc-9904-52671560e950/rest-proxy/mgmt/tm/ltm/node",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"resolver",
+								"device-groups",
+								"JC_Device_Group",
+								"devices",
+								"cdb656c0-5eb7-4efc-9904-52671560e950",
+								"rest-proxy",
+								"mgmt",
+								"tm",
+								"ltm",
+								"node"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Node on BIG IP A through Rest Proxy",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46cGFzc3dvcmQ="
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Jons_awesome_bigiq_Proxy\",\n    \"partition\": \"Common\",\n    \"address\": \"1.1.1.1\"\n  }"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/resolver/device-groups/JC_Device_Group/devices/cdb656c0-5eb7-4efc-9904-52671560e950/rest-proxy/mgmt/tm/ltm/node",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"resolver",
+								"device-groups",
+								"JC_Device_Group",
+								"devices",
+								"cdb656c0-5eb7-4efc-9904-52671560e950",
+								"rest-proxy",
+								"mgmt",
+								"tm",
+								"ltm",
+								"node"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "License Pooling",
+			"item": [
+				{
+					"name": "GET License Pools",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46YWRtaW4="
+							}
+						],
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/device/licensing/pool/regkey/licenses",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"device",
+								"licensing",
+								"pool",
+								"regkey",
+								"licenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET License Pool Licenses",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46YWRtaW4="
+							}
+						],
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/device/licensing/pool/regkey/licenses/6040fa76-4103-4c31-92d1-c87363a52d12/offerings/?$select=name",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"device",
+								"licensing",
+								"pool",
+								"regkey",
+								"licenses",
+								"6040fa76-4103-4c31-92d1-c87363a52d12",
+								"offerings",
+								""
+							],
+							"query": [
+								{
+									"key": "$select",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET License Allocation Info",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46YWRtaW4="
+							}
+						],
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/device/licensing/pool/regkey/licenses/23a30fc1-a606-449a-a3f9-c7f7c38db2ed/offerings/MLEDI-FGFOV-QLLFI-UYTCT-FZASZTM/members/?$select=deviceName",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"device",
+								"licensing",
+								"pool",
+								"regkey",
+								"licenses",
+								"23a30fc1-a606-449a-a3f9-c7f7c38db2ed",
+								"offerings",
+								"MLEDI-FGFOV-QLLFI-UYTCT-FZASZTM",
+								"members",
+								""
+							],
+							"query": [
+								{
+									"key": "$select",
+									"value": "deviceName"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Grant License",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46YWRtaW4="
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"deviceAddress\": \"10.1.1.246\",\n\t\"username\": admin,\n\t\"password\": admin\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/device/licensing/pool/regkey/licenses/23a30fc1-a606-449a-a3f9-c7f7c38db2ed/offerings/MLEDI-FGFOV-QLLFI-UYTCT-FZASZTM/members/",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"device",
+								"licensing",
+								"pool",
+								"regkey",
+								"licenses",
+								"23a30fc1-a606-449a-a3f9-c7f7c38db2ed",
+								"offerings",
+								"MLEDI-FGFOV-QLLFI-UYTCT-FZASZTM",
+								"members",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assigning a license to an unreachable device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"bigiq_task_id\", value:\"id\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigiq_auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"licensePoolName\": \"F5-BIG-MSP-LOADV9-LIC\",\n  \"command\": \"assign\",\n  \"address\": \"10.0.0.50\",\n  \"assignmentType\": \"UNREACHABLE\",\n  \"macAddress\": \"11:11:11:11:11:11\",\n  \"hypervisor\": \"kvm\",\n  \"unitOfMeasure\": \"yearly\",\n  \"tenant\": \"Hidden DataCentre\"\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/device/tasks/licensing/pool/member-management/",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"device",
+								"tasks",
+								"licensing",
+								"pool",
+								"member-management",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Poll for unreachable license task completion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"bigiq_license_file\", value:\"licenseText\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigiq_auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/device/tasks/licensing/pool/member-management/{{bigiq_task_id}}",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"device",
+								"tasks",
+								"licensing",
+								"pool",
+								"member-management",
+								"{{bigiq_task_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rest User Creation",
+			"item": [
+				{
+					"name": "Get Selflink of Accounts on F5",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46cGFzc3dvcmQ="
+							}
+						],
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/authz/users",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"authz",
+								"users"
+							]
+						},
+						"description": "Get Properties of F5 Accounts"
+					},
+					"response": []
+				},
+				{
+					"name": "Patch iControl_REST_API_User Group",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46cGFzc3dvcmQ="
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userReferences\": [\n    {\n      \"link\": \"https://localhost/mgmt/shared/authz/users/########USERACCOUNT!#########\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/authz/roles/iControl_REST_API_User",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"authz",
+								"roles",
+								"iControl_REST_API_User"
+							]
+						},
+						"description": "Edit the group with control to icontrol rest"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify your user was added to rest group",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46cGFzc3dvcmQ="
+							}
+						],
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/authz/roles/iControl_REST_API_User",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"authz",
+								"roles",
+								"iControl_REST_API_User"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Workflows",
+			"item": [
+				{
+					"name": "Get VS from BIQ-IQ",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46cGFzc3dvcmQ="
+							}
+						],
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/resolver/device-groups/cm-adccore-allbigipDevices/devices/cdb656c0-5eb7-4efc-9904-52671560e950",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"resolver",
+								"device-groups",
+								"cm-adccore-allbigipDevices",
+								"devices",
+								"cdb656c0-5eb7-4efc-9904-52671560e950"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Device Discovery",
+			"item": [
+				{
+					"name": "Add BIG-IQ Device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var check_vals = [",
+									"        { ",
+									"            \"path\":\"timeout\", ",
+									"            \"value\":\"36000\" ",
+									"        }",
+									"    ];",
+									"",
+									"f5_check_response(check_vals);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigip_a_auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"address\": \"10.128.1.200\",\n\t\"httpsPort\": 443,\n\t\"userName\": \"azureuser\",\n\t\"password\": \"PlaintextPassword234!\",\n\t\"clusterName\": \"Azure_Cluster\"\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/global/tasks/device-trust",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"global",
+								"tasks",
+								"device-trust"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Discover BIG-IQ Services",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var check_vals = [",
+									"        { ",
+									"            \"path\":\"timeout\", ",
+									"            \"value\":\"36000\" ",
+									"        }",
+									"    ];",
+									"",
+									"f5_check_response(check_vals);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigip_a_auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"moduleList\": [{\n\t\t\"module\": \"adc_core\"\n\t}, {\n\t\t\"module\": \"asm\"\n\t}, {\n\t\t\"module\": \"fps\"\n\t}, {\n\t\t\"module\": \"security_shared\"\n\t}],\n\t\"deviceReference\": {\n\t\t\"link\": \"https://localhost/mgmt/cm/system/machineid-resolver/fc16f3c1-55b2-46b6-bd55-b32f479290ea\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/global/tasks/device-discovery",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"global",
+								"tasks",
+								"device-discovery"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Managed BIG-IPS",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var check_vals = [",
+									"        { ",
+									"            \"path\":\"timeout\", ",
+									"            \"value\":\"36000\" ",
+									"        }",
+									"    ];",
+									"",
+									"f5_check_response(check_vals);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigiq_auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/resolver/device-groups/cm-bigip-allBigIpDevices/devices?$select=mcpDeviceName,address",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"resolver",
+								"device-groups",
+								"cm-bigip-allBigIpDevices",
+								"devices"
+							],
+							"query": [
+								{
+									"key": "$select",
+									"value": "mcpDeviceName,address"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Import BIG-IP LTM Services",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var check_vals = [",
+									"        { ",
+									"            \"path\":\"timeout\", ",
+									"            \"value\":\"36000\" ",
+									"        }",
+									"    ];",
+									"",
+									"f5_check_response(check_vals);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigip_a_auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"deviceReference\": {\n\t\t\"link\": \"https://localhost/mgmt/cm/system/machineid-resolver/fc16f3c1-55b2-46b6-bd55-b32f479290ea\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/adc-core/tasks/declare-mgmt-authority",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"adc-core",
+								"tasks",
+								"declare-mgmt-authority"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Import BIG-IP ASM Services",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var check_vals = [",
+									"        { ",
+									"            \"path\":\"timeout\", ",
+									"            \"value\":\"36000\" ",
+									"        }",
+									"    ];",
+									"",
+									"f5_check_response(check_vals);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigip_a_auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"deviceReference\": {\n\t\t\"link\": \"https://localhost/mgmt/cm/system/machineid-resolver/fc16f3c1-55b2-46b6-bd55-b32f479290ea\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/asm/tasks/declare-mgmt-authority",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"asm",
+								"tasks",
+								"declare-mgmt-authority"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Import BIG-IP Websafe Services",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var check_vals = [",
+									"        { ",
+									"            \"path\":\"timeout\", ",
+									"            \"value\":\"36000\" ",
+									"        }",
+									"    ];",
+									"",
+									"f5_check_response(check_vals);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigip_a_auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"deviceReference\": {\n\t\t\"link\": \"https://localhost/mgmt/cm/system/machineid-resolver/fc16f3c1-55b2-46b6-bd55-b32f479290ea\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/websafe/tasks/declare-mgmt-authority",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"websafe",
+								"tasks",
+								"declare-mgmt-authority"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add DCD to CM",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var check_vals = [",
+									"        { ",
+									"            \"path\":\"timeout\", ",
+									"            \"value\":\"36000\" ",
+									"        }",
+									"    ];",
+									"",
+									"f5_check_response(check_vals);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigip_a_auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\n  \t\"address\": \"10.128.20.6\",\n  \t\"bigIqUsername\": \"azureuser\",\n  \t\"bigIqPassword\": \"PlaintextPassword234!\",\n  \t\"httpPort\": 9200,\n  \t\"transportAddress\": \"10.128.20.6\",\n  \t\"transportPort\": 9300,\n  \t\"zone\": \"jon-demo-bigiq\"\n  }"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/shared/esmgmt/add-node",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"shared",
+								"esmgmt",
+								"add-node"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Self Service",
+			"item": [
+				{
+					"name": "Pool Member Change",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var check_vals = [",
+									"        { ",
+									"            \"path\":\"timeout\", ",
+									"            \"value\":\"36000\" ",
+									"        }",
+									"    ];",
+									"",
+									"f5_check_response(check_vals);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigiq_auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/adc-core/tasks/self-service",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"adc-core",
+								"tasks",
+								"self-service"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Onboarding",
+			"item": [
+				{
+					"name": "Easy-Setup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var check_vals = [",
+									"        { ",
+									"            \"path\":\"timeout\", ",
+									"            \"value\":\"36000\" ",
+									"        }",
+									"    ];",
+									"",
+									"f5_check_response(check_vals);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{bigiq_auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"hostname\": \"{{big_iq_mgmt}}.iq\",\n      \"internalSelfIpAddresses\": \"10.128.20.4/24\",\n      \"ntpServerAddresses\": \"[0.pool.ntp.org]\"\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/system/easy-setup",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"system",
+								"easy-setup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BIG-IP VE",
+			"item": [
+				{
+					"name": "BIG-IP VE Creation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-F5-Auth-Token",
+								"type": "text",
+								"value": "{{bigiq_auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Create_VE\",\n    \"veName\": \"jon002\",\n    \"environmentReference\": {\n        \"link\": \"https://localhost/mgmt/cm/cloud/environments/4122a07f-8538-3291-886d-4e25b0059163\",\n        \"fullPath\": \"Calalang_Azure_Environment\"\n    },\n    \"azureAdminPassword\": \"Harrison123!\"\n}"
+						},
+						"url": {
+							"raw": "https://d6cd6779-0dd9-4ebb-85dc-447e879b9c7e.access.udf.f5.com/mgmt/cm/cloud/tasks/create-ve",
+							"protocol": "https",
+							"host": [
+								"d6cd6779-0dd9-4ebb-85dc-447e879b9c7e",
+								"access",
+								"udf",
+								"f5",
+								"com"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"cloud",
+								"tasks",
+								"create-ve"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unreachable Licensing",
+			"item": [
+				{
+					"name": "Retrieve BIG-IQ Authentication Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"big_iq_auth_token\", value:\"token.token\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{big_iq_cred}}\",\n    \"password\": \"{{big_iq_pass}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/shared/authn/login",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"authn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assigning a license to an unreachable device",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"big_iq_task_id\", value:\"id\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{big_iq_auth_token}}",
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman."
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"licensePoolName\": \"F5-BIG-MSP-LOADV9-LIC\",\n    \"command\": \"assign\",\n    \"address\": \"10.0.0.50\",\n    \"assignmentType\": \"UNREACHABLE\",\n    \"macAddress\": \"11:11:11:11:11:11\",\n    \"hypervisor\": \"kvm\",\n    \"unitOfMeasure\": \"yearly\",\n    \"tenant\": \"Hidden DataCentre\"\n}"
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/device/tasks/licensing/pool/member-management/",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"device",
+								"tasks",
+								"licensing",
+								"pool",
+								"member-management",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Poll for unreachable license task completion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"big_iq_license_file\", value:\"licenseText\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{big_iq_auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{big_iq_mgmt}}/mgmt/cm/device/tasks/licensing/pool/member-management/{{big_iq_task_id}}",
+							"protocol": "https",
+							"host": [
+								"{{big_iq_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"cm",
+								"device",
+								"tasks",
+								"licensing",
+								"pool",
+								"member-management",
+								"{{big_iq_task_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve BIG-IP Authentication Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"eval(postman.getGlobalVariable(\"_f5_workflow_functions\"));",
+									"",
+									"var populate_vars = [",
+									"        {name:\"big_ip_auth_token\", value:\"token.token\"}",
+									"    ];",
+									"    ",
+									"f5_populate_env_vars(populate_vars);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{big_ip_cred}}\",\n    \"password\": \"{{big_ip_pass}}\",\n    \"loginProviderName\": \"tmos\"\n}"
+						},
+						"url": {
+							"raw": "https://{{big_ip_mgmt}}/mgmt/shared/authn/login",
+							"protocol": "https",
+							"host": [
+								"{{big_ip_mgmt}}"
+							],
+							"path": [
+								"mgmt",
+								"shared",
+								"authn",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Unreachable license to BIG-IP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-F5-Auth-Token",
+								"value": "{{big_ip_auth_token}}",
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman."
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"licenseText\": \"{{big_iq_license_file}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{big_ip_mgmt}}/tm/shared/licensing/registration",
+							"protocol": "https",
+							"host": [
+								"{{big_ip_mgmt}}"
+							],
+							"path": [
+								"tm",
+								"shared",
+								"licensing",
+								"registration"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cloud Environments",
+			"item": []
+		}
+	]
+}
