@@ -1,9 +1,9 @@
 # Variables
 
 # AWS Environment
-variable "awsRegion" { default = "us-west-2" }
-variable "projectPrefix" { default = "mydemo" }
-variable "resourceOwner" { default = "myname" }
+variable "awsRegion" {}
+variable "projectPrefix" {}
+variable "resourceOwner" {}
 
 
 # NETWORK

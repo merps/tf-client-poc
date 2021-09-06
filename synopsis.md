@@ -144,9 +144,10 @@ demonstrates how BIG-IQ in conjunction with BIG-IP can be used to demonstrate de
 
 ### TODO 
  - [] clean/insert finalised flow and source from [testing](https://gitlab.wirelessravens.org/f5labs/tf-client-poc)
- - [] revise Terraform [BIG-IQ](https://github.com/merps/terraform-aws-bigiq) module for v8
+ - [] revise Terraform [BIG-IQ](https://github.com/merps/terraform-aws-bigiq) module for v8.x
  - [] DCEC for Solution with TGZ and Inspect VPC as per LandingZone Pattern
-
+ - [] `cloud-init` JSON payload either via DO or `runtime-init`
+ - [] additional calls for BIG-IQ Postman collection
 
 ## References
 

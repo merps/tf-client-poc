@@ -1,9 +1,29 @@
-variable "ec2_key_name" {
-  description = "EC2 KeyPair name for instance generation"
-  type        = string
+variable "allowedIps" {
+  type = list(string)
+}
+
+variable "projectPrefix" {
+  type = string
+}
+
+variable "resourceOwner" {
+  type = string
 }
 
 variable "cm_licenses" {
+  type = string
+}
+
+variable "dcd_licenses" {
+  type    = string
+  default = "skipLicense"
+}
+
+variable "f5_ssh_publickey" {
+  type = string
+}
+
+variable "ec2_key_name" {
   type = string
 }
 
