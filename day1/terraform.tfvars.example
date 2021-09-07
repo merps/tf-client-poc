@@ -1,4 +1,5 @@
 projectPrefix = "cld-mig"
+awsRegion = "ap-southeast-2"
 resourceOwner = "BFSI"
 cm_licenses = "xxxxxxxxxxxxxxxx"
 dcd_licenses = "xxxxxxxxxxxxxxxx"
