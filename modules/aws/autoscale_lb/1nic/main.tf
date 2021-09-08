@@ -33,6 +33,13 @@ locals {
     bigIqSkuKeyword2   = var.bigIqSkuKeyword2
     bigIqUnitOfMeasure = var.bigIqUnitOfMeasure
     bigIqHypervisor    = var.bigIqHypervisor
+  }),
+  f5_biq_do = templatefile("${path.module}/f5_biq_do.tmpl", {
+    f5_username        = var.f5_username
+    f5_password        = var.f5_password
+    bigIqPassword      = var.bigIqPassword
+    bigIqUsername      = var.bigIqUsername
+    bigip_hostname     = var.bigip_hostname
   })
 }
 
@@ -78,6 +85,7 @@ resource "aws_launch_template" "bigip-lt" {
   image_id      = data.aws_ami.f5_ami.id
   instance_type = var.ec2_instance_type
   key_name      = aws_key_pair.bigip.key_name
+  #TDDO additional for BIG-IQ DO template addition...
   user_data     = base64encode(local.f5_onboard)
 
   network_interfaces {
