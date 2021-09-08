@@ -1,6 +1,7 @@
 #!/bin/bash
 mkdir -p  /var/log/cloud /config/cloud /var/lib/cloud/icontrollx_installs /var/config/rest/downloads
 LOG_FILE=/var/log/cloud/startup-script.log
+DO_LOG_FILE=/var/log/cloud/bigiq-do-start.log
 [[ ! -f $LOG_FILE ]] && touch $LOG_FILE || { echo "Run Only Once. Exiting"; exit; }
 npipe=/tmp/$$.tmp
 trap "rm -f $npipe" EXIT
@@ -132,6 +133,43 @@ post_onboard_enabled:
     - tmsh save sys config
 EOF
 
+#BIG-IQ json payload creation...
+cat << 'EOF' > /config/cloud/bigiq-do.json
+{
+    "class": "DO",
+    "declaration": {
+            "schemaVersion": "1.5.0",
+            "class": "Device",
+            "async": true,
+            "Common": {
+                    "class": "Tenant",
+                    "myProvision": {
+                            "ltm": "nominal",
+                            "class": "Provision"
+                    },
+                    "admin": {
+                            "class": "User",
+                            "userType": "regular",
+                            "password": "${f5_password}",
+                            "partitionAccess": {
+                                    "all-partitions": {
+                                            "role": "${f5_username}"
+                                    }
+                            }
+                    },
+                    "hostname": "'{{{HOST_NAME}}}'"
+            }
+    },
+    "targetUsername": "${f5_password}",
+    "targetHost": "'{{{HOST_NAME}}}'",
+    "targetPassphrase": "${f5_password}",
+    "bigIqSettings": {
+            "failImportOnConflict": false,
+            "conflictPolicy": "USE_BIGIQ",
+            "deviceConflictPolicy": "USE_BIGIP",
+            "versionedConflictPolicy": "KEEP_VERSION"
+    }
+}
 # Retrieve self IP and update yaml declaration
 SELF_IP=$(egrep fixed-address /var/lib/dhclient/dhclient.leases | head -1 | grep -oE '[^ ]+$' | tr -d ';' )
 sed -i "s/\$SELF_IP/$SELF_IP/g" /config/cloud/runtime-init-conf.yaml
@@ -160,5 +198,22 @@ done
 bash /var/config/rest/downloads/f5-bigip-runtime-init.gz.run -- '--cloud aws'
 /usr/local/bin/f5-bigip-runtime-init --config-file /config/cloud/runtime-init-conf.yaml
 EOF
-chmod 755 /config/startup-script.sh
+
+# Installation of BIG-IQ DO for stuff that does things...
+cat << 'EOF' > /config/bigiq-do.sh
+#!/bin/bash
+npipe=/tmp/$$-do.tmp
+trap "rm -f $npipe" EXIT
+mknod $npipe p
+tee <$npipe -a $LOG_FILE /dev/ttyS0 &
+exec 1>&-
+exec 1>$npipe
+exec 2>&1
+AUTH_TOKEN=$(curl -sk --header "Content-Type: application/json" --request POST --data '{"username":"${bigIqHost}","password":"${bigIqPassword}" https://${bigIqHost}/mgmt/shared/authn/login | jq -r '.token.token') || sleep 30
+curl -sk --header "Content-Type: application/json" --header "X-F5-Auth-Token: '$AUTH_TOKEN'" --request POST --data @/config/cloud/bigiq-do.json https://${bigIqHost}/mgmt/shared/declarative-onboarding
+EOF
+
+# update config for deployment
+chmod 755 /config/startup-script.sh /config/bigiq-do.sh
 nohup /config/startup-script.sh & >> $LOG_FILE
+nohup /config/bigiq-do.sh & >> $DO_LOG_FILE

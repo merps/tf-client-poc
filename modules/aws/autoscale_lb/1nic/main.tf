@@ -33,13 +33,6 @@ locals {
     bigIqSkuKeyword2   = var.bigIqSkuKeyword2
     bigIqUnitOfMeasure = var.bigIqUnitOfMeasure
     bigIqHypervisor    = var.bigIqHypervisor
-  }),
-  f5_biq_do = templatefile("${path.module}/f5_biq_do.tmpl", {
-    f5_username        = var.f5_username
-    f5_password        = var.f5_password
-    bigIqPassword      = var.bigIqPassword
-    bigIqUsername      = var.bigIqUsername
-    bigip_hostname     = var.bigip_hostname
   })
 }
 
