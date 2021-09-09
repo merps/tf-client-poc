@@ -4,5 +4,5 @@ resourceOwner = "BFSI"
 cm_licenses = "xxxxxxxxxxxxxxxx"
 dcd_licenses = "xxxxxxxxxxxxxxxx"
 allowedIps = ["0.0.0.0/0"]
-f5_ssh_publickey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDNpaGeh3UmwTqJ6gzA291olU/CBUBCwczbU1SZKvCnlniwmAC2U/6VuYjX51kZzKtXDC+OsZLQSWuKsGbUDQBG1iaR8rf2nXfVgnE9Jx74CyW4Mu6bDu0V945aR8KPHDogVCaaEJ7oZ5z0fRz0K+yZS+YDAsBzETxDCWuUNF/34tR7OsgomXHVsQ3g0Gy5c8654DHRbFhsVoyexcz+YA9qy/d5zHkoY5T80JOO5urNo2VXrLQ3JYpwY/O324ERJF8QRrFgbxjzzFjFBQyLfhtXoEnvBerHqSq433Fc48++XCrK5Qzg5pjRYZ7VoAD+6SzEOFaVaGBd+gozdG4x8VEoykLruiz1OPrlV3/HtAPHvc3F6B/1kEClFvuCFqmp7ezI5V+83NItSOooFJZzOs0HuPm2pch8LCs6w+Ez8TmXWO0NpUsAlcaT6tJQeluY12L/u9OkGKDhk1GMASEir5GKF8Rh7u65n/VWFlN/0+AT0cgu5JZBb7AQVdyNaBWGNAs= mkennedy@SYD-ML-00011073"
-ec2_key_name = "mjk-cld-early"
+f5_ssh_publickey = "<ssh_key.pub contents>"
+ec2_key_name = "<aws_ec2_key_name>"
